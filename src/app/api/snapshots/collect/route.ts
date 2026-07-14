@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
     const result = await collectBazaarSnapshot();
     return NextResponse.json({
       ...result,
-      trigger: "hourly-cron",
+      trigger: "daily-cron",
     });
   } catch (error) {
     return NextResponse.json(

@@ -128,7 +128,7 @@ export default async function InvestmentHistoryPage({
             <p className="mt-3 text-sm leading-6 text-slate-300">
               The page expects real rows from{" "}
               <span className="text-cyan-200">bazaar_snapshots</span>. These
-              columns are ready for hourly scheduled collection.
+              columns are ready for daily scheduled collection.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
               {futureColumns.map((column) => (
