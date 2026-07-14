@@ -19,11 +19,14 @@ V1 focuses on Bazaar products only. It includes an order-flip dashboard, Supabas
 Copy `.env.example` to `.env.local` and fill in:
 
 - `SUPABASE_URL`
-- `SUPABASE_SERVICE_ROLE_KEY`
+- `SUPABASE_SECRET_KEY`
 - `SNAPSHOT_ADMIN_SECRET`
 - `CRON_SECRET`
 
 Never commit `.env.local`.
+
+`SUPABASE_SERVICE_ROLE_KEY` is also supported for older local setups, but
+`SUPABASE_SECRET_KEY` is the preferred name for new deployments.
 
 ## Daily Snapshots
 

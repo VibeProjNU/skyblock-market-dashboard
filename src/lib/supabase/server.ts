@@ -17,20 +17,28 @@ export type BazaarSnapshotRow = {
   captured_at: string;
 };
 
+export function hasSupabaseServerConfig() {
+  return Boolean(process.env.SUPABASE_URL && getSupabaseSecretKey());
+}
+
 export function getSupabaseAdminClient() {
   const supabaseUrl = process.env.SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const secretKey = getSupabaseSecretKey();
 
-  if (!supabaseUrl || !serviceRoleKey) {
+  if (!supabaseUrl || !secretKey) {
     throw new Error(
-      "Supabase is not configured. Add SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY to .env.local.",
+      "Supabase is not configured. Add SUPABASE_URL and SUPABASE_SECRET_KEY to your environment variables.",
     );
   }
 
-  return createClient(supabaseUrl, serviceRoleKey, {
+  return createClient(supabaseUrl, secretKey, {
     auth: {
       persistSession: false,
       autoRefreshToken: false,
     },
   });
+}
+
+function getSupabaseSecretKey() {
+  return process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 }

@@ -1,7 +1,10 @@
 import "server-only";
 import { summarizeProductHistory } from "@/lib/history/investment-signals";
 import type { ProductHistorySummary } from "@/lib/history/investment-signals";
-import { getSupabaseAdminClient } from "@/lib/supabase/server";
+import {
+  getSupabaseAdminClient,
+  hasSupabaseServerConfig,
+} from "@/lib/supabase/server";
 import type { BazaarSnapshotRow } from "@/lib/supabase/server";
 
 const HISTORY_PAGE_SIZE = 1_000;
@@ -31,7 +34,7 @@ export type InvestmentHistoryData =
 export async function getInvestmentHistoryData(
   selectedProductId?: string,
 ): Promise<InvestmentHistoryData> {
-  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  if (!hasSupabaseServerConfig()) {
     return {
       isConfigured: false,
       error:
