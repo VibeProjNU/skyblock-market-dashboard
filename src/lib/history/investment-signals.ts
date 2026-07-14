@@ -8,6 +8,7 @@ export type ProductHistorySummary = {
   snapshotCount: number;
   average24h: number | null;
   average7d: number | null;
+  average28d: number | null;
   average30d: number | null;
   volumeSpike: boolean;
   volatilityPercent: number | null;
@@ -32,9 +33,11 @@ export function summarizeProductHistory(
   const now = new Date(latest.captured_at).getTime();
   const rows24h = rowsSince(sortedRows, now, 24);
   const rows7d = rowsSince(sortedRows, now, 24 * 7);
+  const rows28d = rowsSince(sortedRows, now, 24 * 28);
   const rows30d = rowsSince(sortedRows, now, 24 * 30);
   const average24h = averagePrice(rows24h);
   const average7d = averagePrice(rows7d);
+  const average28d = averagePrice(rows28d);
   const average30d = averagePrice(rows30d);
   const latestVolume = latest.buy_volume + latest.sell_volume;
   const averageRecentVolume = averageVolume(rows7d.slice(0, -1));
@@ -55,6 +58,7 @@ export function summarizeProductHistory(
     snapshotCount: sortedRows.length,
     average24h,
     average7d,
+    average28d,
     average30d,
     volumeSpike,
     volatilityPercent,

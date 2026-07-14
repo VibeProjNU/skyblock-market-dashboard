@@ -5,7 +5,8 @@ import { getSupabaseAdminClient } from "@/lib/supabase/server";
 import type { BazaarSnapshotRow } from "@/lib/supabase/server";
 
 const HISTORY_PAGE_SIZE = 1_000;
-const MAX_HISTORY_ROWS = 50_000;
+const MAX_HISTORY_ROWS = 1_500_000;
+const HISTORY_WINDOW_DAYS = 30;
 
 export type InvestmentHistoryData =
   | {
@@ -85,12 +86,16 @@ export async function getInvestmentHistoryData(
 async function fetchSnapshotRows() {
   const supabase = getSupabaseAdminClient();
   const rows: BazaarSnapshotRow[] = [];
+  const cutoff = new Date(
+    Date.now() - HISTORY_WINDOW_DAYS * 24 * 60 * 60 * 1000,
+  ).toISOString();
 
   for (let start = 0; start < MAX_HISTORY_ROWS; start += HISTORY_PAGE_SIZE) {
     const end = start + HISTORY_PAGE_SIZE - 1;
     const { data, error } = await supabase
       .from("bazaar_snapshots")
       .select("*")
+      .gte("captured_at", cutoff)
       .order("captured_at", { ascending: false })
       .range(start, end);
 

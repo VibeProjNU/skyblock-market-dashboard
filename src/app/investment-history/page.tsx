@@ -128,7 +128,7 @@ export default async function InvestmentHistoryPage({
             <p className="mt-3 text-sm leading-6 text-slate-300">
               The page expects real rows from{" "}
               <span className="text-cyan-200">bazaar_snapshots</span>. These
-              columns are ready for later 5-minute scheduled collection.
+              columns are ready for hourly scheduled collection.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
               {futureColumns.map((column) => (
@@ -172,6 +172,9 @@ export default async function InvestmentHistoryPage({
                     7d Avg
                   </th>
                   <th className="border-b border-slate-800 px-3 py-3 text-right font-semibold">
+                    28d Avg
+                  </th>
+                  <th className="border-b border-slate-800 px-3 py-3 text-right font-semibold">
                     Volatility
                   </th>
                   <th className="border-b border-slate-800 px-3 py-3 text-right font-semibold">
@@ -184,7 +187,7 @@ export default async function InvestmentHistoryPage({
                   <tr>
                     <td
                       className="px-3 py-10 text-center text-slate-400"
-                      colSpan={7}
+                      colSpan={8}
                     >
                       No real historical snapshots found.
                     </td>
@@ -214,6 +217,9 @@ export default async function InvestmentHistoryPage({
                     </td>
                     <td className="px-3 py-3 text-right text-slate-200">
                       {formatOptionalCoins(product.average7d)}
+                    </td>
+                    <td className="px-3 py-3 text-right text-slate-200">
+                      {formatOptionalCoins(product.average28d)}
                     </td>
                     <td className="px-3 py-3 text-right text-slate-200">
                       {formatOptionalPercent(product.volatilityPercent)}
@@ -247,6 +253,14 @@ function SignalPanel({ product }: { product: ProductHistorySummary }) {
         </div>
         <div className="mt-2">
           <SignalBadge signal={product.signal} />
+        </div>
+      </div>
+      <div className="rounded-md border border-slate-800 bg-slate-900/70 p-3">
+        <div className="text-xs uppercase tracking-[0.18em] text-slate-500">
+          28d Avg
+        </div>
+        <div className="mt-2 font-semibold text-white">
+          {formatOptionalCoins(product.average28d)}
         </div>
       </div>
       <div className="rounded-md border border-slate-800 bg-slate-900/70 p-3">

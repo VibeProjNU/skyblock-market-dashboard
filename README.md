@@ -11,6 +11,8 @@ V1 focuses on Bazaar products only. It includes an order-flip dashboard, Supabas
 - Search, sortable columns, margin range, spread, volume, and order-count filters
 - Refresh button that fetches fresh Bazaar data and saves a snapshot to Supabase
 - Investment History page powered by saved `bazaar_snapshots` rows
+- Hourly server-side snapshot collection via Vercel Cron
+- 24h, 7d, 28d, and 30d saved-price averages
 
 ## Environment
 
@@ -19,5 +21,13 @@ Copy `.env.example` to `.env.local` and fill in:
 - `SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `SNAPSHOT_ADMIN_SECRET`
+- `CRON_SECRET`
 
 Never commit `.env.local`.
+
+## Hourly Snapshots
+
+`vercel.json` schedules `/api/snapshots/collect` once per hour. In Vercel,
+set `CRON_SECRET` as a private environment variable so the cron request can
+write snapshots securely. Local development can still use the manual snapshot
+route, but true hourly collection requires a hosted server.
